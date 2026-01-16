@@ -5,32 +5,29 @@
 {% block content %}
 <div class="row justify-content-center py-5">
   <div class="col-md-5">
-    <div class="card shadow-sm border-0 p-4" style="border-radius: 16px;">
+    <div class="card border-0 shadow-lg p-4 p-md-5 animate__animated animate__fadeIn">
       <div class="text-center mb-4">
         <h2 class="fw-bold">Welcome Back</h2>
         <p class="text-muted">Login to manage your media projects</p>
       </div>
+      
       <form method="post">
         {% csrf_token %}
-        {% for field in form %}
-          <div class="mb-3">
-            <label class="form-label small fw-semibold text-secondary">{{ field.label }}</label>
-            <input type="{{ field.field.widget.input_type|default:'text' }}" 
-                   name="{{ field.name }}" 
-                   class="form-control py-2 {% if field.errors %}is-invalid{% endif %}"
-                   {% if field.field.required %}required{% endif %}>
-            {% for error in field.errors %}
-              <div class="invalid-feedback">{{ error }}</div>
-            {% endfor %}
-          </div>
-        {% endfor %}
-        <div class="d-grid mt-4">
-          <button type="submit" class="btn btn-primary py-3 fw-bold shadow-sm" style="border-radius: 12px;">Login</button>
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-muted">Username</label>
+          <input type="text" name="username" class="form-control form-control-lg bg-light border-0 px-4 py-3" style="border-radius: 12px;" required>
+        </div>
+        <div class="mb-4">
+          <label class="form-label small fw-bold text-muted">Password</label>
+          <input type="password" name="password" class="form-control form-control-lg bg-light border-0 px-4 py-3" style="border-radius: 12px;" required>
+        </div>
+        <div class="d-grid mb-4">
+          <button type="submit" class="btn btn-primary btn-lg py-3 shadow-lg">Login</button>
+        </div>
+        <div class="text-center">
+          <p class="text-muted small mb-0">Don't have an account? <a href="{% url 'signup' %}" class="text-primary fw-bold text-decoration-none">Sign up</a></p>
         </div>
       </form>
-      <div class="mt-4 text-center">
-        <p class="text-muted small">Don't have an account? <a href="{% url 'signup' %}" class="text-primary fw-semibold text-decoration-none">Create Account</a></p>
-      </div>
     </div>
   </div>
 </div>
