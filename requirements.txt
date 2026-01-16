@@ -13,3 +13,9 @@ djangorestframework>=3.14
 djangorestframework-simplejwt>=5.3
 Pillow>=9.0
 gunicorn
+Django>=4.2
+django-cors-headers>=3.13
+djangorestframework>=3.14
+djangorestframework-simplejwt>=5.3
+gunicorn
+Pillow>=9.0

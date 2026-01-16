@@ -3,63 +3,89 @@
 {% block title %}Dashboard — Picha Yangu{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="mb-5">
+  <h1 class="fw-bold mb-1">Welcome back</h1>
+  <p class="text-muted">Here's what's happening with your media projects today.</p>
+</div>
+
+<div class="row g-4">
   <div class="col-md-3">
-    <div class="card text-center">
-      <div class="card-body">
-        <h5 class="card-title">{{ clients_count }}</h5>
-        <p class="card-text">Clients</p>
-        <a href="/clients/" class="btn btn-sm btn-primary">Manage</a>
+    <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2">Clients</span>
+        </div>
+        <h2 class="fw-bold mb-1">{{ clients_count }}</h2>
+        <p class="text-muted small mb-3">Total active clients</p>
+        <a href="/clients/" class="text-decoration-none fw-semibold small">View all →</a>
       </div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="card text-center">
-      <div class="card-body">
-        <h5 class="card-title">{{ projects_count }}</h5>
-        <p class="card-text">Projects</p>
-        <a href="/projects/" class="btn btn-sm btn-primary">Manage</a>
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">Projects</span>
+        </div>
+        <h2 class="fw-bold mb-1">{{ projects_count }}</h2>
+        <p class="text-muted small mb-3">Managed projects</p>
+        <a href="/projects/" class="text-decoration-none fw-semibold small">Manage →</a>
       </div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="card text-center">
-      <div class="card-body">
-        <h5 class="card-title">{{ media_count }}</h5>
-        <p class="card-text">Media Files</p>
-        <a href="/media/" class="btn btn-sm btn-primary">Browse</a>
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2">Media</span>
+        </div>
+        <h2 class="fw-bold mb-1">{{ media_count }}</h2>
+        <p class="text-muted small mb-3">Uploaded files</p>
+        <a href="/media/" class="text-decoration-none fw-semibold small">Browse →</a>
       </div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="card text-center">
-      <div class="card-body">
-        <h5 class="card-title">{{ deleted_count }}</h5>
-        <p class="card-text">In Recovery</p>
-        <a href="/recovery/" class="btn btn-sm btn-warning">Recover</a>
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2">Recovery</span>
+        </div>
+        <h2 class="fw-bold mb-1">{{ deleted_count }}</h2>
+        <p class="text-muted small mb-3">Files in vault</p>
+        <a href="/recovery/" class="text-decoration-none fw-semibold small">Open vault →</a>
       </div>
     </div>
   </div>
 </div>
 
-<hr class="my-5">
-
-<h3>Recent Clients</h3>
-{% if recent_clients %}
-  <div class="row">
-    {% for client in recent_clients %}
-      <div class="col-md-4">
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">{{ client.name }}</h5>
-            <p class="card-text text-muted">{{ client.projects.count }} project{{ client.projects.count|pluralize }}</p>
-            <a href="/clients/{{ client.id }}/" class="btn btn-sm btn-outline-primary">View</a>
+<div class="mt-5 pt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold m-0">Recent Clients</h3>
+    <a href="/clients/new/" class="btn btn-primary btn-sm px-4">Add Client</a>
+  </div>
+  
+  {% if recent_clients %}
+    <div class="row g-4">
+      {% for client in recent_clients %}
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body p-4">
+              <div class="avatar-placeholder mb-3 d-flex align-items-center justify-content-center bg-light rounded-circle" style="width: 48px; height: 48px;">
+                <span class="fw-bold text-secondary">{{ client.name|slice:":1"|upper }}</span>
+              </div>
+              <h5 class="fw-bold mb-1">{{ client.name }}</h5>
+              <p class="text-muted small mb-4">{{ client.projects.count }} active project{{ client.projects.count|pluralize }}</p>
+              <a href="/clients/{{ client.id }}/" class="btn btn-outline-primary w-100 py-2">View Profile</a>
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
-  </div>
-{% else %}
-  <p class="text-muted">No clients yet. <a href="/clients/new/">Create your first client.</a></p>
-{% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5 bg-white rounded-4 border border-dashed">
+      <p class="text-muted mb-0">No clients yet. Start by <a href="/clients/new/" class="fw-semibold">creating your first client</a>.</p>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}
