@@ -8,6 +8,10 @@ import hashlib
 User = get_user_model()
 
 
+def generate_share_token():
+    return str(uuid.uuid4())
+
+
 class Client(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clients')
     name = models.CharField(max_length=255)
@@ -101,7 +105,7 @@ class ShareLink(models.Model):
     PERMISSION_CHOICES = (('view', 'View Only'), ('download', 'Download'))
     
     media = models.ForeignKey(MediaFile, on_delete=models.CASCADE, related_name='share_links')
-    token = models.CharField(max_length=64, unique=True, default=lambda: str(uuid.uuid4()))
+    token = models.CharField(max_length=64, unique=True, default=generate_share_token)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shared_links')
     permission = models.CharField(max_length=10, choices=PERMISSION_CHOICES, default='view')
     expires_at = models.DateTimeField(null=True, blank=True)
@@ -119,4 +123,3 @@ class ShareLink(models.Model):
 
     def __str__(self):
         return f"Share: {self.media.file.name} ({self.token[:8]}...)"
-        return f"Deleted: {self.media.file.name} (expires {self.expiry})"
