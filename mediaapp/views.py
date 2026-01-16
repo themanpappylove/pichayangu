@@ -157,6 +157,8 @@ def landing_page(request):
     return render(request, 'mediaapp/landing.html')
 
 def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
