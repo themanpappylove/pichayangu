@@ -1,0 +1,63 @@
+{% extends 'mediaapp/base.html' %}
+
+{% block title %}Picha Yangu — Professional Media Management{% endblock %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+  <div class="col-lg-6 mb-5 mb-lg-0">
+    <h1 class="display-4 fw-bold mb-3" style="letter-spacing: -0.05em; line-height: 1.1;">Your Media,<br><span class="text-primary">Perfectly Organized.</span></h1>
+    <p class="lead text-muted mb-5">The specialized workspace for photographers and videographers. Manage clients, organize projects, and protect your work with our professional-grade vault.</p>
+    <div class="d-grid gap-3 d-md-flex">
+      <a href="/admin/login/" class="btn btn-primary btn-lg px-5 py-3">Get Started</a>
+      <a href="/admin/login/" class="btn btn-outline-primary btn-lg px-5 py-3">Login</a>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="row g-4">
+      <div class="col-6">
+        <div class="card border-0 shadow-sm p-4 bg-light">
+          <div class="mb-3 text-primary">📸</div>
+          <h5 class="fw-bold">Photography</h5>
+          <p class="small text-muted mb-0">Manage high-res galleries and client proofs effortlessly.</p>
+        </div>
+      </div>
+      <div class="col-6 mt-4">
+        <div class="card border-0 shadow-sm p-4 bg-dark text-white">
+          <div class="mb-3">🎥</div>
+          <h5 class="fw-bold">Videography</h5>
+          <p class="small text-white-50 mb-0">Track raw footage and final cuts across projects.</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="card border-0 shadow-sm p-4">
+          <div class="mb-3 text-warning">🔄</div>
+          <h5 class="fw-bold">Vault</h5>
+          <p class="small text-muted mb-0">Never lose a file again with our 7-day recovery system.</p>
+        </div>
+      </div>
+      <div class="col-6 mt-4">
+        <div class="card border-0 shadow-sm p-4 bg-primary text-white">
+          <div class="mb-3">🔗</div>
+          <h5 class="fw-bold">Sharing</h5>
+          <p class="small text-white-50 mb-0">Deliver work with secure, professional share links.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row py-5 mt-5 border-top">
+  <div class="col-md-4 text-center">
+    <h2 class="fw-bold text-primary mb-2">100%</h2>
+    <p class="text-muted">Secure storage</p>
+  </div>
+  <div class="col-md-4 text-center border-start border-end">
+    <h2 class="fw-bold text-primary mb-2">7 Days</h2>
+    <p class="text-muted">Recovery retention</p>
+  </div>
+  <div class="col-md-4 text-center">
+    <h2 class="fw-bold text-primary mb-2">Unlimited</h2>
+    <p class="text-muted">Client projects</p>
+  </div>
+</div>
+{% endblock %}

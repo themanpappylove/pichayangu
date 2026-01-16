@@ -148,6 +148,11 @@ class DeletedFileViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 # Template views for web UI
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'mediaapp/landing.html')
+
 def dashboard(request):
     clients = Client.objects.all()
     projects = Project.objects.all()
