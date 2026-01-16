@@ -180,6 +180,10 @@ def media_view(request):
     })
 
 
+def projects_view(request):
+    projects = Project.objects.all()
+    return render(request, 'mediaapp/projects.html', {'projects': projects})
+
 def recovery_view(request):
     deleted_files = DeletedFile.objects.all()
     return render(request, 'mediaapp/recovery.html', {'deleted_files': deleted_files})
