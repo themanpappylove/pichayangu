@@ -4,62 +4,71 @@
 
 {% block content %}
 <div class="animate__animated animate__fadeIn">
-<div class="row align-items-center py-5 rounded-5 overflow-hidden mb-5 bg-hero position-relative shadow-lg" style="background-image: url('/static/stock_images/photographer_taking__1a4049bb.jpg'); min-height: 600px;">
-  <div class="position-absolute top-0 start-0 w-100 h-100 overlay-dark" style="background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);"></div>
-  <div class="col-lg-7 p-5 position-relative z-1 text-white">
-    <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInLeft" style="letter-spacing: -0.05em; line-height: 1.1;">Your Media,<br><span class="text-info">Perfectly Organized.</span></h1>
-    <p class="lead mb-5 opacity-75 animate__animated animate__fadeInLeft animate__delay-1s">The specialized workspace for photographers and videographers. Manage clients, organize projects, and protect your work with our professional-grade vault.</p>
-    <div class="d-grid gap-3 d-md-flex animate__animated animate__fadeInUp animate__delay-1s">
-      <a href="/signup/" class="btn btn-primary btn-lg px-5 py-3 border-0 shadow-lg">Get Started</a>
-      <a href="/admin/login/" class="btn btn-outline-light btn-lg px-5 py-3 glass-morphism">Login</a>
+  <!-- Hero Section -->
+  <div class="row align-items-center py-5 rounded-5 overflow-hidden mb-5 bg-hero position-relative shadow-lg" style="background-image: url('/static/stock_images/photographer_taking__1a4049bb.jpg'); min-height: 600px;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 overlay-dark" style="background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);"></div>
+    <div class="col-lg-7 p-5 position-relative z-1 text-white">
+      <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInLeft" style="letter-spacing: -0.05em; line-height: 1.1;">Your Media,<br><span class="text-info">Perfectly Organized.</span></h1>
+      <p class="lead mb-5 opacity-75 animate__animated animate__fadeInLeft animate__delay-1s">The specialized workspace for photographers and videographers. Manage clients, organize projects, and protect your work with our professional-grade vault.</p>
+      <div class="d-grid gap-3 d-md-flex animate__animated animate__fadeInUp animate__delay-1s">
+        <a href="/signup/" class="btn btn-primary btn-lg px-5 py-3 border-0 shadow-lg">Get Started</a>
+        <a href="/admin/login/" class="btn btn-outline-light btn-lg px-5 py-3 glass-morphism">Login</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="row g-4 mt-5">
-  <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
-    <div class="card border-0 shadow-sm p-4 bg-light h-100">
-      <div class="mb-3 fs-1">📸</div>
-      <h5 class="fw-bold">Photography</h5>
-      <p class="small text-muted mb-0">Manage high-res galleries and client proofs effortlessly.</p>
+  <!-- Features Section -->
+  <div class="row g-4 mt-5">
+    <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
+      <div class="card border-0 shadow-lg p-4 h-100 text-white" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);">
+        <div class="mb-3 fs-1 animate__animated animate__pulse animate__infinite">📸</div>
+        <h5 class="fw-bold">Photography</h5>
+        <p class="small opacity-90 mb-0">Manage high-res galleries and client proofs effortlessly with our specialized toolset.</p>
+      </div>
+    </div>
+    <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
+      <div class="card border-0 shadow-lg p-4 h-100 text-white" style="background: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);">
+        <div class="mb-3 fs-1 animate__animated animate__pulse animate__infinite">🎥</div>
+        <h5 class="fw-bold">Videography</h5>
+        <p class="small opacity-90 mb-0">Track raw footage and final cuts across projects. Built for high-bandwidth workflows.</p>
+      </div>
+    </div>
+    <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
+      <div class="card border-0 shadow-lg p-4 h-100 text-white" style="background: linear-gradient(135deg, #0ea5e9 0%, #2dd4bf 100%);">
+        <div class="mb-3 fs-1 animate__animated animate__pulse animate__infinite">🔄</div>
+        <h5 class="fw-bold">Vault</h5>
+        <p class="small opacity-90 mb-0">Never lose a file again. Our 60-day recovery system is your professional safety net.</p>
+      </div>
+    </div>
+    <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
+      <div class="card border-0 shadow-lg p-4 h-100 text-white" style="background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);">
+        <div class="mb-3 fs-1 animate__animated animate__pulse animate__infinite">🔗</div>
+        <h5 class="fw-bold">Sharing</h5>
+        <p class="small opacity-90 mb-0">Deliver work with secure, professional share links that expire when you want them to.</p>
+      </div>
     </div>
   </div>
-  <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
-    <div class="card border-0 shadow-sm p-4 bg-dark text-white h-100">
-      <div class="mb-3 fs-1">🎥</div>
-      <h5 class="fw-bold">Videography</h5>
-      <p class="small text-white-50 mb-0">Track raw footage and final cuts across projects.</p>
-    </div>
-  </div>
-  <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
-    <div class="card border-0 shadow-sm p-4 h-100">
-      <div class="mb-3 fs-1 text-warning">🔄</div>
-      <h5 class="fw-bold">Vault</h5>
-      <p class="small text-muted mb-0">Never lose a file again with our 60-day recovery system.</p>
-    </div>
-  </div>
-  <div class="col-md-3 animate__animated animate__fadeInUp animate__delay-1s">
-    <div class="card border-0 shadow-sm p-4 bg-primary text-white h-100">
-      <div class="mb-3 fs-1">🔗</div>
-      <h5 class="fw-bold">Sharing</h5>
-      <p class="small text-white-50 mb-0">Deliver work with secure, professional share links.</p>
-    </div>
-  </div>
-</div>
 
-<div class="row py-5 mt-5 border-top animate__animated animate__fadeIn">
-  <div class="col-md-4 text-center">
-    <h2 class="fw-bold text-primary mb-2">100%</h2>
-    <p class="text-muted">Secure storage</p>
+  <!-- Stats Section -->
+  <div class="row py-5 mt-5 border-top animate__animated animate__fadeIn">
+    <div class="col-md-4 mb-4 mb-md-0 text-center">
+      <div class="p-4 rounded-4 bg-white shadow-sm border border-light">
+        <h2 class="display-5 fw-bold text-primary mb-2">100%</h2>
+        <p class="text-muted fw-semibold mb-0 uppercase tracking-widest small">Secure Storage</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4 mb-md-0 text-center">
+      <div class="p-4 rounded-4 bg-white shadow-sm border border-light">
+        <h2 class="display-5 fw-bold text-info mb-2">60 Days</h2>
+        <p class="text-muted fw-semibold mb-0 uppercase tracking-widest small">Recovery Retention</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="p-4 rounded-4 bg-white shadow-sm border border-light">
+        <h2 class="display-5 fw-bold text-success mb-2">Unlimited</h2>
+        <p class="text-muted fw-semibold mb-0 uppercase tracking-widest small">Client Projects</p>
+      </div>
+    </div>
   </div>
-  <div class="col-md-4 text-center border-start border-end">
-    <h2 class="fw-bold text-primary mb-2">60 Days</h2>
-    <p class="text-muted">Recovery retention</p>
-  </div>
-  <div class="col-md-4 text-center">
-    <h2 class="fw-bold text-primary mb-2">Unlimited</h2>
-    <p class="text-muted">Client projects</p>
-  </div>
-</div>
 </div>
 {% endblock %}
