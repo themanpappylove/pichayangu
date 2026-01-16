@@ -1,0 +1,144 @@
+{% extends 'mediaapp/base.html' %}
+
+{% block title %}Media — Picha Yangu{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Media Library</h2>
+  <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">+ Upload Media</a>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-4">
+    <label>Filter by Client</label>
+    <select id="clientFilter" class="form-select form-select-sm" onchange="filterMedia()">
+      <option value="">All Clients</option>
+      {% for client in clients %}
+        <option value="{{ client.id }}">{{ client.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label>Filter by Project</label>
+    <select id="projectFilter" class="form-select form-select-sm" onchange="filterMedia()">
+      <option value="">All Projects</option>
+      {% for project in projects %}
+        <option value="{{ project.id }}">{{ project.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label>Filter by Type</label>
+    <select id="typeFilter" class="form-select form-select-sm" onchange="filterMedia()">
+      <option value="">All Types</option>
+      <option value="image">Images</option>
+      <option value="video">Videos</option>
+    </select>
+  </div>
+</div>
+
+{% if media %}
+  <div class="row" id="mediaGrid">
+    {% for item in media %}
+      <div class="col-md-3 mb-4 media-item" data-client="{{ item.project.client.id }}" data-project="{{ item.project.id }}" data-type="{{ item.media_type }}">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title text-truncate">{{ item.file.name|truncatewords:3 }}</h6>
+            <p class="card-text small text-muted">
+              {{ item.project.client.name }} / {{ item.project.name }}<br>
+              Type: <span class="badge bg-info">{{ item.get_media_type_display }}</span><br>
+              Status: <span class="badge bg-secondary">{{ item.get_status_display }}</span>
+            </p>
+            <div class="btn-group btn-group-sm w-100" role="group">
+              <a href="/media/{{ item.id }}/" class="btn btn-outline-info" title="Details">📋</a>
+              <a href="{{ item.file.url }}" target="_blank" class="btn btn-outline-primary" title="View">👁️</a>
+              <button class="btn btn-outline-warning" onclick="softDelete({{ item.id }})" title="Delete">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-info">No media files. <a href="#" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload your first file.</a></div>
+{% endif %}
+
+<!-- Upload Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Media</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="uploadProject" class="form-label">Project</label>
+            <select id="uploadProject" name="project" class="form-select" required>
+              <option value="">Select a project...</option>
+              {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.client.name }} / {{ project.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="uploadFile" class="form-label">Select File</label>
+            <input type="file" id="uploadFile" name="file" class="form-control" accept="image/*,video/*" required>
+          </div>
+          <div class="mb-3">
+            <label for="uploadStatus" class="form-label">Status</label>
+            <select id="uploadStatus" name="status" class="form-select">
+              <option value="raw">Raw</option>
+              <option value="edited">Edited</option>
+              <option value="final">Final</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('project', document.getElementById('uploadProject').value);
+    formData.append('file', document.getElementById('uploadFile').files[0]);
+    formData.append('media_type', document.getElementById('uploadFile').files[0].type.startsWith('video') ? 'video' : 'image');
+    formData.append('status', document.getElementById('uploadStatus').value);
+    
+    const res = await fetch('/api/media/', {
+      method: 'POST',
+      body: formData
+    });
+    if (res.ok) location.reload();
+  });
+
+  async function softDelete(id) {
+    if (confirm('Delete this file? It will move to Recovery Vault.')) {
+      const res = await fetch(`/api/media/${id}/`, { method: 'DELETE' });
+      if (res.ok) location.reload();
+    }
+  }
+
+  function filterMedia() {
+    const clientId = document.getElementById('clientFilter').value;
+    const projectId = document.getElementById('projectFilter').value;
+    const type = document.getElementById('typeFilter').value;
+    
+    document.querySelectorAll('.media-item').forEach(item => {
+      let show = true;
+      if (clientId && item.dataset.client !== clientId) show = false;
+      if (projectId && item.dataset.project !== projectId) show = false;
+      if (type && item.dataset.type !== type) show = false;
+      item.style.display = show ? 'block' : 'none';
+    });
+  }
+</script>
+{% endblock %}

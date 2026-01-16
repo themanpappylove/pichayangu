@@ -1,0 +1,9 @@
+Django>=4.2
+djangorestframework>=3.14
+djangorestframework-simplejwt>=5.3
+Pillow>=9.0
+django-cors-headers>=3.13
+celery>=5.4
+redis>=4.5
+django-storages[boto3]>=1.13
+boto3>=1.28

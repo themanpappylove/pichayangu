@@ -1,0 +1,46 @@
+{% extends 'mediaapp/base.html' %}
+
+{% block title %}Welcome — Picha Yangu{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 text-center py-5">
+    <h1 class="display-4 mb-4">📸 Picha Yangu</h1>
+    <p class="lead mb-4">Media management for photographers and videographers</p>
+    <p class="text-muted mb-5">Organize your client projects, manage media files, and recover accidentally deleted files—all in one place.</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <a href="/clients/" class="btn btn-primary btn-lg px-4">Browse Clients</a>
+      <a href="/media/" class="btn btn-outline-secondary btn-lg px-4">View Media</a>
+    </div>
+  </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">🎯 Organize</h5>
+        <p class="card-text">Group media by clients and projects. Easy navigation and quick searches.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">🔄 Recover</h5>
+        <p class="card-text">Soft-delete files with a configurable recovery window. Peace of mind.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">☁️ Store</h5>
+        <p class="card-text">Local or S3-backed storage. Scale your media library without limits.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

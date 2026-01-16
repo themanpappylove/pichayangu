@@ -1,0 +1,65 @@
+{% extends 'mediaapp/base.html' %}
+
+{% block title %}Dashboard — Picha Yangu{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{ clients_count }}</h5>
+        <p class="card-text">Clients</p>
+        <a href="/clients/" class="btn btn-sm btn-primary">Manage</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{ projects_count }}</h5>
+        <p class="card-text">Projects</p>
+        <a href="/projects/" class="btn btn-sm btn-primary">Manage</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{ media_count }}</h5>
+        <p class="card-text">Media Files</p>
+        <a href="/media/" class="btn btn-sm btn-primary">Browse</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{ deleted_count }}</h5>
+        <p class="card-text">In Recovery</p>
+        <a href="/recovery/" class="btn btn-sm btn-warning">Recover</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="my-5">
+
+<h3>Recent Clients</h3>
+{% if recent_clients %}
+  <div class="row">
+    {% for client in recent_clients %}
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ client.name }}</h5>
+            <p class="card-text text-muted">{{ client.projects.count }} project{{ client.projects.count|pluralize }}</p>
+            <a href="/clients/{{ client.id }}/" class="btn btn-sm btn-outline-primary">View</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">No clients yet. <a href="/clients/new/">Create your first client.</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends 'mediaapp/base.html' %}
+
+{% block title %}File Details — Picha Yangu{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>📄 File: {{ media.file.name|truncatewords:5 }}</h2>
+  <a href="/media/" class="btn btn-outline-secondary">Back to Media</a>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">File Info</h5>
+      </div>
+      <div class="card-body">
+        <p><strong>Project:</strong> {{ media.project.client.name }} / {{ media.project.name }}</p>
+        <p><strong>Type:</strong> <span class="badge bg-info">{{ media.get_media_type_display }}</span></p>
+        <p><strong>Status:</strong> <span class="badge bg-secondary">{{ media.get_status_display }}</span></p>
+        <p><strong>Uploaded:</strong> {{ media.created_at|date:"M d, Y H:i" }}</p>
+        <p><strong>File Hash:</strong> <code style="font-size: 0.85rem;">{{ media.file_hash|truncatewords:2 }}</code></p>
+        <a href="{{ media.file.url }}" class="btn btn-sm btn-primary" target="_blank">View File</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Share Link</h5>
+      </div>
+      <div class="card-body">
+        <form id="shareForm" class="mb-3">
+          <div class="mb-2">
+            <label>Permission</label>
+            <select id="sharePerm" class="form-select form-select-sm">
+              <option value="view">View Only</option>
+              <option value="download">Download</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label>Expires in (days)</label>
+            <input type="number" id="shareExpire" class="form-control form-control-sm" value="7" min="0">
+          </div>
+          <button type="submit" class="btn btn-sm btn-success">Create Share Link</button>
+        </form>
+        <hr>
+        <div id="shareList">
+          <p class="text-muted small">Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">📦 Versions</h5>
+      </div>
+      <div class="card-body">
+        <form id="versionForm" class="mb-3">
+          <div class="mb-2">
+            <label>Upload New Version</label>
+            <input type="file" id="versionFile" class="form-control form-control-sm" required>
+          </div>
+          <div class="mb-2">
+            <input type="text" id="versionNote" class="form-control form-control-sm" placeholder="Note (optional)">
+          </div>
+          <button type="submit" class="btn btn-sm btn-info">Create Version</button>
+        </form>
+        <div id="versionList">
+          <p class="text-muted small">Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">🔍 Duplicates</h5>
+      </div>
+      <div class="card-body">
+        <div id="duplicateList">
+          <p class="text-muted small">Scanning...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const mediaId = {{ media.id }};
+
+  // Load share links
+  async function loadShares() {
+    const res = await fetch(`/api/media/${mediaId}/shares/`);
+    const shares = await res.json();
+    let html = shares.length ? '<div class="list-group list-group-sm">' : '<p class="text-muted">No share links yet.</p>';
+    for (const share of shares) {
+      const status = share.is_valid ? 'active' : 'expired';
+      html += `
+        <div class="list-group-item">
+          <small><code>${share.token}</code></small><br>
+          <small>${share.permission} | Expires: ${share.expires_at ? new Date(share.expires_at).toLocaleDateString() : 'Never'} | Accessed: ${share.access_count}x</small>
+          <button class="btn btn-xs btn-danger" onclick="deleteShare(${share.id})">Delete</button>
+        </div>
+      `;
+    }
+    if (shares.length) html += '</div>';
+    document.getElementById('shareList').innerHTML = html;
+  }
+
+  async function deleteShare(id) {
+    if (confirm('Delete share link?')) {
+      await fetch(`/api/shares/${id}/`, { method: 'DELETE' });
+      loadShares();
+    }
+  }
+
+  document.getElementById('shareForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const res = await fetch(`/api/media/${mediaId}/create_share/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        permission: document.getElementById('sharePerm').value,
+        expires_in_days: parseInt(document.getElementById('shareExpire').value)
+      })
+    });
+    if (res.ok) loadShares();
+  });
+
+  // Load versions
+  async function loadVersions() {
+    const res = await fetch(`/api/media/${mediaId}/versions/`);
+    const versions = await res.json();
+    let html = versions.length ? '<div class="list-group list-group-sm">' : '<p class="text-muted">No versions yet.</p>';
+    for (const v of versions) {
+      html += `
+        <div class="list-group-item">
+          <strong>v${v.version_number}</strong> — ${new Date(v.created_at).toLocaleDateString()}<br>
+          <small>${v.note || '(no note)'}</small><br>
+          <a href="${v.file}" class="btn btn-xs btn-outline-info" target="_blank">Download</a>
+        </div>
+      `;
+    }
+    if (versions.length) html += '</div>';
+    document.getElementById('versionList').innerHTML = html;
+  }
+
+  document.getElementById('versionForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', document.getElementById('versionFile').files[0]);
+    formData.append('note', document.getElementById('versionNote').value);
+    const res = await fetch(`/api/media/${mediaId}/create_version/`, {
+      method: 'POST',
+      body: formData
+    });
+    if (res.ok) {
+      loadVersions();
+      document.getElementById('versionForm').reset();
+    }
+  });
+
+  // Load duplicates
+  async function loadDuplicates() {
+    const res = await fetch(`/api/media/${mediaId}/duplicates/`);
+    const data = await res.json();
+    let html = data.exact_duplicates.length
+      ? '<div class="alert alert-warning"><strong>⚠️ Found ' + data.exact_duplicates.length + ' exact duplicate(s):</strong></div>'
+      : '<p class="text-success">No exact duplicates found.</p>';
+    
+    for (const dup of data.exact_duplicates) {
+      html += `<div class="list-group-item"><small>${dup.file} (ID: ${dup.id})</small></div>`;
+    }
+    document.getElementById('duplicateList').innerHTML = html;
+  }
+
+  // Initial load
+  loadShares();
+  loadVersions();
+  loadDuplicates();
+</script>
+{% endblock %}

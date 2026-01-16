@@ -1,0 +1,251 @@
+openapi: 3.0.3
+info:
+  title: Picha Yangu API
+  version: "1.0.0"
+  description: API for the Picha Yangu media management platform (clients, projects, media, recovery)
+
+servers:
+  - url: http://localhost:8000
+
+paths:
+  /api/clients/:
+    get:
+      summary: List clients
+      responses:
+        '200':
+          description: A list of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      summary: Create client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+      responses:
+        '201':
+          description: Created
+  /api/clients/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve client
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    put:
+      summary: Update client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreate'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      summary: Delete client
+      responses:
+        '204':
+          description: Deleted
+
+  /api/projects/:
+    get:
+      summary: List projects
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      summary: Create project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+      responses:
+        '201':
+          description: Created
+
+  /api/media/:
+    get:
+      summary: List media files (excluding soft-deleted)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaFile'
+    post:
+      summary: Upload media file
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                project:
+                  type: integer
+                file:
+                  type: string
+                  format: binary
+                media_type:
+                  type: string
+      responses:
+        '201':
+          description: Uploaded
+
+  /api/media/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Retrieve media file metadata
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaFile'
+    delete:
+      summary: Soft-delete media file (moves to Recovery Vault)
+      responses:
+        '204':
+          description: Soft-deleted
+
+  /api/media/{id}/restore/:
+    post:
+      summary: Restore a soft-deleted media file
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Restored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaFile'
+
+  /api/deleted/:
+    get:
+      summary: List soft-deleted files (Recovery Vault)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeletedFile'
+
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ClientCreate:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        client:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ProjectCreate:
+      type: object
+      required: [client, name]
+      properties:
+        client:
+          type: integer
+        name:
+          type: string
+
+    MediaFile:
+      type: object
+      properties:
+        id:
+          type: integer
+        project:
+          type: integer
+        uploaded_by:
+          type: integer
+          nullable: true
+        file:
+          type: string
+        media_type:
+          type: string
+        status:
+          type: string
+        is_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    DeletedFile:
+      type: object
+      properties:
+        id:
+          type: integer
+        media:
+          $ref: '#/components/schemas/MediaFile'
+        deleted_at:
+          type: string
+          format: date-time
+        expiry:
+          type: string
+          format: date-time
