@@ -94,6 +94,12 @@
             <li class="nav-item"><a class="nav-link" href="/clients/">Clients</a></li>
             <li class="nav-item"><a class="nav-link" href="/media/">Media</a></li>
             <li class="nav-item"><a class="nav-link" href="/recovery/">Recovery Vault</a></li>
+            <li class="nav-item">
+              <form method="post" action="{% url 'logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="nav-link btn btn-link border-0 p-0 ms-3" style="vertical-align: baseline;">Logout</button>
+              </form>
+            </li>
           </ul>
         </div>
       </div>
