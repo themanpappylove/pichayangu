@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Client, Project, MediaFile, DeletedFile, FileVersion, ShareLink
 from .serializers import (ClientSerializer, ProjectSerializer, MediaFileSerializer, 
                          DeletedFileSerializer, FileVersionSerializer, ShareLinkSerializer)
@@ -181,8 +181,19 @@ def media_view(request):
 
 
 def projects_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        client_id = request.POST.get('client_id')
+        if name and client_id:
+            Project.objects.create(name=name, client_id=client_id)
+            return redirect('projects')
+
     projects = Project.objects.all()
-    return render(request, 'mediaapp/projects.html', {'projects': projects})
+    clients = Client.objects.all()
+    return render(request, 'mediaapp/projects.html', {
+        'projects': projects,
+        'clients': clients
+    })
 
 def recovery_view(request):
     deleted_files = DeletedFile.objects.all()
