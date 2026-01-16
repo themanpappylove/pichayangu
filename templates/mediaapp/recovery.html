@@ -62,7 +62,12 @@
 <script>
   async function restore(id) {
     if (confirm('Restore this file?')) {
-      const res = await fetch(`/api/media/${id}/restore/`, { method: 'POST' });
+      const res = await fetch(`/api/media/${id}/restore/`, { 
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      });
       if (res.ok) {
         alert('File restored!');
         location.reload();
@@ -70,6 +75,21 @@
         alert('Restore failed.');
       }
     }
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
   }
 </script>
 {% endblock %}

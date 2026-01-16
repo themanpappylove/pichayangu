@@ -39,12 +39,15 @@ class MediaFileViewSet(viewsets.ModelViewSet):
         media = get_object_or_404(MediaFile, pk=pk)
         if not media.is_deleted:
             return Response({'detail': 'Not deleted'}, status=status.HTTP_400_BAD_REQUEST)
+        
         media.restore()
         # cleanup DeletedFile entry
         try:
-            media.deleted_entry.delete()
-        except DeletedFile.DoesNotExist:
+            if hasattr(media, 'deleted_entry'):
+                media.deleted_entry.delete()
+        except Exception:
             pass
+        
         serializer = self.get_serializer(media)
         return Response(serializer.data)
 
