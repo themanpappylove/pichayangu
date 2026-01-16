@@ -44,7 +44,7 @@ class MediaFile(models.Model):
     file_hash = models.CharField(max_length=64, blank=True, null=True, db_index=True)  # SHA256 for duplicate detection
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def soft_delete(self, retention_days=7):
+    def soft_delete(self, retention_days=60):
         if self.is_deleted:
             return
         self.is_deleted = True

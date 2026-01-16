@@ -18,7 +18,7 @@
 *   **Version Control**: Track "Raw," "Edited," and "Final" versions of the same file.
 
 ### 3. Safety Net: Recovery Vault
-*   **Soft-Delete**: Accidentally deleted a file? It stays in the Recovery Vault for a configurable retention period (default 7 days).
+*   **Soft-Delete**: Accidentally deleted a file? It stays in the Recovery Vault for a configurable retention period (default 60 days).
 *   **Instant Restoration**: Recover files to their original project with a single click before the expiry date.
 
 ### 4. Professional Delivery

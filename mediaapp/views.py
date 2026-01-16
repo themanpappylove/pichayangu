@@ -30,8 +30,8 @@ class MediaFileViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        # soft delete with default 7-day retention
-        instance.soft_delete(retention_days=7)
+        # soft delete with default 60-day retention
+        instance.soft_delete(retention_days=60)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True, methods=['post'])
@@ -148,10 +148,24 @@ class DeletedFileViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 # Template views for web UI
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
 def landing_page(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
     return render(request, 'mediaapp/landing.html')
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('dashboard')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
 
 def dashboard(request):
     clients = Client.objects.all()

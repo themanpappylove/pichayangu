@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (ClientViewSet, ProjectViewSet, MediaFileViewSet, DeletedFileViewSet, 
                     FileVersionViewSet, ShareLinkViewSet,
-                    landing_page, dashboard, clients_view, projects_view, media_view, recovery_view, file_detail_view)
+                    landing_page, signup_view, dashboard, clients_view, projects_view, media_view, recovery_view, file_detail_view)
 from .auth_views import AuthViewSet
 
 router = DefaultRouter()
@@ -17,6 +17,7 @@ router.register(r'deleted', DeletedFileViewSet, basename='deleted')
 urlpatterns = [
     path('api/', include(router.urls)),
     path('', landing_page, name='landing'),
+    path('signup/', signup_view, name='signup'),
     path('dashboard/', dashboard, name='dashboard'),
     path('clients/', clients_view, name='clients'),
     path('projects/', projects_view, name='projects'),
